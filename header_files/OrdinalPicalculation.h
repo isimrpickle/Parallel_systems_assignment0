@@ -4,4 +4,4 @@
 #pragma once
 
 double randfrom(double min, double max);
-void ordinal_Pi_calculation(const long int number_of_throws){
+void ordinal_Pi_calculation(const long int number_of_throws);

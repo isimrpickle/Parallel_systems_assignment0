@@ -1,6 +1,7 @@
-#include "in-order.h"
+#include "OrdinalPicalculation.h"
 
 //function to generate a  random double number from the range of max-min(1-(-1))
+//based on https://stackoverflow.com/questions/33058848/generate-a-random-double-between-1-and-1
 double randfrom(double min, double max) 
 {
     double range = (max - min); 
@@ -22,7 +23,5 @@ void ordinal_Pi_calculation(const long int number_of_throws){
     printf("pi is %f \n",Pi_approximation);
 }
 
-int main(){
-    long int number_of_throws=1000000;
-    Pi_calculation(number_of_throws);
-}
+
+
