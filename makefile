@@ -1,33 +1,59 @@
 CXX = gcc
-CXXFLAGS = -Iheader_files # Include path for header files
-LDFLAGS = -lpthread       # Linker flags
+CXXFLAGS = -Iheader_files      # Include path for header files
+LDFLAGS = -lpthread            # Linker flags
 OUTPUT_DIR = output
-MODULES_DIR = modules
+EXERCISE1_DIR = exercise1
+EXERCISE2_DIR = exercise2
 
-.PHONY: all clean
+# .PHONY targets
+.PHONY: all clean exercise_1 exercise_2 print-debug
 
-# Object files
-OBJS = $(OUTPUT_DIR)/my_rand.o \
-	$(OUTPUT_DIR)/ordinalPiCalculation.o \
-	$(OUTPUT_DIR)/ParallelPiCalculation.o
+# Object files for exercise 1
+OBJS1 = $(OUTPUT_DIR)/my_rand.o \
+        $(OUTPUT_DIR)/ordinalPiCalculation.o \
+        $(OUTPUT_DIR)/ParallelPiCalculation.o
 
-all: $(OUTPUT_DIR)/main
+# Object files for exercise 2
+OBJS2 = $(OUTPUT_DIR)/shared_variable_a.o \
+        $(OUTPUT_DIR)/shared_variable_p.o
 
-$(OUTPUT_DIR)/main: $(MODULES_DIR)/main.c $(OBJS) | $(OUTPUT_DIR)
+# Default target builds both exercises
+all: exercise_1 exercise_2
+
+# Build exercise 1
+exercise_1: $(OUTPUT_DIR)/exercise_1
+
+$(OUTPUT_DIR)/exercise_1: $(EXERCISE1_DIR)/exercise_1.c $(OBJS1) | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUTPUT_DIR)/my_rand.o: $(MODULES_DIR)/my_rand.c | $(OUTPUT_DIR)
+$(OUTPUT_DIR)/my_rand.o: $(EXERCISE1_DIR)/my_rand.c | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(OUTPUT_DIR)/ordinalPiCalculation.o: $(MODULES_DIR)/ordinalPiCalculation.c | $(OUTPUT_DIR)
+$(OUTPUT_DIR)/ordinalPiCalculation.o: $(EXERCISE1_DIR)/ordinalPiCalculation.c | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(OUTPUT_DIR)/ParallelPiCalculation.o: $(MODULES_DIR)/ParallelPiCalculation.c | $(OUTPUT_DIR)
-	$(CXX) $(CXXFLAGS) -c -o $@ $< $(LDFLAGS)
+$(OUTPUT_DIR)/ParallelPiCalculation.o: $(EXERCISE1_DIR)/ParallelPiCalculation.c | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
+# Build exercise 2
+exercise_2: $(OUTPUT_DIR)/exercise_2
+
+$(OUTPUT_DIR)/exercise_2: $(EXERCISE2_DIR)/exercise_2.c $(OBJS2) | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(OUTPUT_DIR)/shared_variable_a.o: $(EXERCISE2_DIR)/shared_variable_a.c | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(OUTPUT_DIR)/shared_variable_p.o: $(EXERCISE2_DIR)/shared_variable_p.c | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+# Output directory creation
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)
 
+
+# Clean all generated files
 clean:
-	rm -f $(OUTPUT_DIR)/main $(OBJS)
+	rm -f $(OUTPUT_DIR)/exercise_1 $(OBJS1)
+	rm -f $(OUTPUT_DIR)/exercise_2 $(OBJS2)
 	rmdir $(OUTPUT_DIR) 2>/dev/null || true

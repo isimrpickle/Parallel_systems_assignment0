@@ -7,7 +7,7 @@ int thread_count=0;
 
 
 void* Pi_thread_approximation(void* rank){
-    int thread_Id =(int) rank;
+    intptr_t thread_Id =(intptr_t) rank;
     unsigned int seed=2468 + thread_Id ; //giving a random seed?
     long int local_count=0;
     long int loops=number_of_throws/thread_count;
@@ -35,15 +35,14 @@ void parallel_Pi_calculation(const long int throws,int threads_total_number){
     thread_count=threads_total_number;
     //initialization of threads
 
-    int thread;
     pthread_t* thread_handles = malloc(thread_count*sizeof(pthread_t)); 
     if(thread_handles==NULL)
         printf("there is an error in malloc");fflush(stdout);
 
     //creating threads and executing the thread function
 
-    for(thread=0; thread<thread_count;thread++){
-        int thread_Id=thread ;
+    for(int thread=0; thread<thread_count;thread++){
+        long thread_Id=thread ;
         pthread_create(&thread_handles[thread],NULL,Pi_thread_approximation,(void*)thread_Id);
     }
 
