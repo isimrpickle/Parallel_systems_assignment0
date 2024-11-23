@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stdlib.h": "c",
-        "parallelpicalculation.h": "c"
+        "parallelpicalculation.h": "c",
+        "exercise2.h": "c"
     }
 }

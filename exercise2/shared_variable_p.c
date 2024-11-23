@@ -26,6 +26,7 @@ long int using_pthreads (int thread_count,long int thread_loop){
     
     pthread_mutex_destroy(&mutex);
     return global_variable;
+    free(thread_handles);
 
 }
 

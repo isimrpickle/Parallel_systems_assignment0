@@ -4,7 +4,7 @@ LDFLAGS = -lpthread            # Linker flags
 OUTPUT_DIR = output
 EXERCISE1_DIR = exercise1
 EXERCISE2_DIR = exercise2
-
+EXERCISE3_DIR = exercise3
 # .PHONY targets
 .PHONY: all clean exercise_1 exercise_2 print-debug
 
@@ -18,7 +18,7 @@ OBJS2 = $(OUTPUT_DIR)/shared_variable_a.o \
         $(OUTPUT_DIR)/shared_variable_p.o
 
 # Default target builds both exercises
-all: exercise_1 exercise_2
+all: exercise_1 exercise_2 exercise_3
 
 # Build exercise 1
 exercise_1: $(OUTPUT_DIR)/exercise_1
@@ -51,9 +51,16 @@ $(OUTPUT_DIR)/shared_variable_p.o: $(EXERCISE2_DIR)/shared_variable_p.c | $(OUTP
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)
 
+exercise_2: $(OUTPUT_DIR)/exercise_3
+
+$(OUTPUT_DIR)/exercise_3: $(EXERCISE3_DIR)/exercise_3.c $ | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+
 
 # Clean all generated files
 clean:
 	rm -f $(OUTPUT_DIR)/exercise_1 $(OBJS1)
 	rm -f $(OUTPUT_DIR)/exercise_2 $(OBJS2)
+	rm -f $(OUTPUT_DIR)/exercise_3 
 	rmdir $(OUTPUT_DIR) 2>/dev/null || true

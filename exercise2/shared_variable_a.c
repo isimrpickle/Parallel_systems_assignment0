@@ -22,6 +22,8 @@ long int using_atomic (int thread_count,long int thread_loop){
 
     for(int i=0;i<thread_count;i++)
         pthread_join(thread_handles[i],NULL);
+        
+    free(thread_handles);
     return global_counter;
 
 }
