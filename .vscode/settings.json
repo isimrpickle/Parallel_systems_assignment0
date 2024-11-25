@@ -2,6 +2,7 @@
     "files.associations": {
         "stdlib.h": "c",
         "parallelpicalculation.h": "c",
-        "exercise2.h": "c"
+        "exercise2.h": "c",
+        "r_w_lock_functions.h": "c"
     }
 }
