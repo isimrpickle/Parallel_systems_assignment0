@@ -7,7 +7,7 @@ void* computation_a(void* loop_variable){
 
     intptr_t thread_loop = (intptr_t)loop_variable; //I was getting the warning: cast from pointer to integer of different size
     for(long int i=0;i<thread_loop;i++){
-        __atomic_fetch_add(&global_counter,__ATOMIC_RELAXED,1);
+        __atomic_fetch_add(&global_counter,1,__ATOMIC_RELAXED);
     }
     
 }
