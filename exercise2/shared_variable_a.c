@@ -14,6 +14,8 @@ void* computation_a(void* loop_variable){
 
 
 long int using_atomic (int thread_count,long int thread_loop){
+    double start,finish;
+    GET_TIME(start);
     global_counter=0;
     pthread_t * thread_handles = malloc(thread_count*sizeof(pthread_t)); 
     for(int i=0;i<thread_count;i++){
@@ -24,6 +26,8 @@ long int using_atomic (int thread_count,long int thread_loop){
         pthread_join(thread_handles[i],NULL);
         
     free(thread_handles);
+    GET_TIME(finish);
+    printf("the elapsed time is: %lf",finish-start);
     return global_counter;
 
 }

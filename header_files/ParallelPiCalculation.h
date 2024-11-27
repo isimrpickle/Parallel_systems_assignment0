@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <stdint.h>
 #include "my_rand.h"
+#include "timer.h"
 #pragma once
 
 

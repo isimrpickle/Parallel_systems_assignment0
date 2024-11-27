@@ -15,8 +15,12 @@ int main(int argc,char** argv){
         number_of_threads=4;
     }
 
-    printf("the number of throws are %lld \n", number_of_throws);
-   // ordinal_Pi_calculation(number_of_throws);
+    printf("the number of throws are %lld and the threads are %d \n", number_of_throws , number_of_threads);
+    printf("The results of oridnal calculation are: \n");
+    ordinal_Pi_calculation(number_of_throws);
+    printf("The results of parallel calculation are: \n");
     parallel_Pi_calculation(number_of_throws,number_of_threads);
+    printf("\n  \n ");
+
 
 }

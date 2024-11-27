@@ -34,7 +34,4 @@ int main(int argc,char* argv){
     pthread_cond_destroy(&R_W->reader);
     pthread_cond_destroy(&R_W->writer);
     pthread_mutex_init(&R_W->mutex, NULL);
-
-
-
 }

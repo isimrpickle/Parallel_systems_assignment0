@@ -1,4 +1,5 @@
 #include "exercise2.h"
+
 pthread_mutex_t mutex;
 long int global_variable;
 void* computation_p(void* loop_variable){
@@ -14,7 +15,8 @@ void* computation_p(void* loop_variable){
 
 
 long int using_pthreads (int thread_count,long int thread_loop){
-    
+    double start,finish;
+    GET_TIME(start);
     pthread_mutex_init(&mutex,NULL);
     global_variable=0;
     pthread_t * thread_handles = malloc(thread_count*sizeof(pthread_t)); 
@@ -25,8 +27,11 @@ long int using_pthreads (int thread_count,long int thread_loop){
         pthread_join(thread_handles[i],NULL);
     
     pthread_mutex_destroy(&mutex);
-    return global_variable;
     free(thread_handles);
+    GET_TIME(finish);
+    printf("the elapsed time is: %lf\n",finish-start);
+    return global_variable;
+    
 
 }
 

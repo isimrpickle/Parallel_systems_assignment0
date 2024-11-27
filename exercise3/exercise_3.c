@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <stdint.h> //intptr
 #include <string.h> //memset
+#include "timer.h"
 
 long int* array;
 int loop;
@@ -21,6 +22,9 @@ int  main(int argc,char**argv ){
         number_of_threads = atoi(argv[1]);
         thread_loop = atol(argv[2]);
     }
+    double start, finish;
+    GET_TIME(start);
+    printf("for number of threads %d and loop being %ld \n",number_of_threads,thread_loop);
     pthread_t * thread_handles = malloc(sizeof(pthread_t)*number_of_threads);
     array=malloc(sizeof( long int)*number_of_threads);
     memset(array, 0, sizeof(long int) * number_of_threads);
@@ -37,7 +41,8 @@ int  main(int argc,char**argv ){
     for(int i=0;i<number_of_threads;i++){
         printf("the value for %d element is %ld \n",i,*(array+i));
     }
-
+    GET_TIME(finish);
+    printf("the elapsed time is : %lf \n \n \n ",finish-start);
     free(thread_handles);
     free(array);
 }

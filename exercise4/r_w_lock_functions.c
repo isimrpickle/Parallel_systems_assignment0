@@ -49,7 +49,7 @@ void* writing_lock(void* r_w_lock){
         R_W->waiting_to_write++;
         pthread_cond_wait(&R_W->writer,&R_W->mutex);
     }
-    R_W->writing_threads++;;
+    R_W->writing_threads++;
     pthread_mutex_unlock(&R_W->mutex);
     unlocking(R_W,1);
 }

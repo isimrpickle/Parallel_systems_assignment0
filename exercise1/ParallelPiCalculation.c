@@ -7,6 +7,7 @@ int thread_count=0;
 
 
 void* Pi_thread_approximation(void* rank){
+    
     intptr_t thread_Id =(intptr_t) rank;
     unsigned int seed=2468 + thread_Id ; //giving a random seed?
     long int local_count=0;
@@ -30,6 +31,8 @@ void* Pi_thread_approximation(void* rank){
 
 
 void parallel_Pi_calculation(const long int throws,int threads_total_number){
+    double start,finish,elapsed_time;
+    GET_TIME(start);
     pthread_mutex_init(&mutex,NULL); //initializing mutex
     number_of_throws=throws;
     thread_count=threads_total_number;
@@ -51,7 +54,9 @@ void parallel_Pi_calculation(const long int throws,int threads_total_number){
     pthread_mutex_destroy(&mutex);
     free(thread_handles);
     double Pi_approximation=4*arrows_in_circle/((double)number_of_throws);
-    printf("from parallel pi is %f \n",Pi_approximation);
+    GET_TIME(finish);
+    elapsed_time=finish - start;
+    printf("Elapsed_time is %lf and pi is %lf \n",elapsed_time,Pi_approximation);fflush(stdout);
 
 }
 

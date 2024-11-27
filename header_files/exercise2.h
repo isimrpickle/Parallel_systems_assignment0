@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdint.h> //for intptr_t
+#include "timer.h"
 
 void* computation_p(void* loop_variable);
 void* computation_a(void* loop_variable);

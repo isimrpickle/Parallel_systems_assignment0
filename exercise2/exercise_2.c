@@ -18,5 +18,5 @@ int main(int argc,char** argv){
     global_variable = using_pthreads(thread_count,thread_loop);
     printf("the global_variable of using pthreads is %ld \n",global_variable);fflush(stdout);
     global_variable = using_atomic(thread_count,thread_loop);
-    printf("the global_variable of using atomic is %ld \n",global_variable);fflush(stdout);
+    printf("the global_variable of using atomic is %ld \n \n \n \n ",global_variable);fflush(stdout);
 }
