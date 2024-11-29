@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 echo -e "enter the number of times each thread want to add to the global variable \n"
 

@@ -74,7 +74,7 @@ $(OUTPUT_DIR)/r_w_lock_functions.o: $(EXERCISE4_DIR)/r_w_lock_functions.c | $(OU
 original: $(OUTPUT_DIR)/original
 
 $(OUTPUT_DIR)/original: original.c $(OBJORIGINAL) | $(OUTPUT_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CXX) -Iheader_files -o $@ $^ $(LDFLAGS)
 
 
 
