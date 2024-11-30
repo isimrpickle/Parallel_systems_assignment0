@@ -11,5 +11,5 @@ int reading_threads,waiting_to_read,writing_threads,waiting_to_write,type_favore
 void* unlocking(reader_writer_lock* R_W,int thread_type);
 void* reading_lock(void* r_w_lock);
 void* writing_lock(void* r_w_lock);
-void r_w_lock_init(reader_writer_lock* lock);
+void r_w_lock_init(reader_writer_lock* lock,int type_favored);
 void destroy_lock(reader_writer_lock* lock);

@@ -6,20 +6,20 @@
 void* unlocking(reader_writer_lock* R_W,int thread_type){
     pthread_mutex_lock(&R_W->mutex);
     if(R_W->type_favored==0){ // if readers are favored
-    if(thread_type == 0){ //thread_type==0 means it's a reading threads, else it's a writing one
-        R_W->reading_threads--;
-        if(R_W->reading_threads==0 && R_W->writing_threads>=1)
-            pthread_cond_signal(&R_W->writer);
-    }
-
-    else{  //implementation which gives priority into a reading thread
-        R_W->writing_threads--;
-        if(R_W->waiting_to_read>=1)  
-            pthread_cond_signal(&R_W->reader);
-        else{
-            pthread_cond_signal(&R_W->writer);
+        if(thread_type == 0){ //thread_type==0 means it's a reading threads, else it's a writing one
+            R_W->reading_threads--;
+            if(R_W->reading_threads==0 && R_W->waiting_to_write>=1)
+                pthread_cond_signal(&R_W->writer);
         }
-    }
+
+        else{  //implementation which gives priority into a reading thread
+            R_W->writing_threads--;
+            if(R_W->waiting_to_read>=1)  
+                pthread_cond_signal(&R_W->reader);
+            else{
+                pthread_cond_signal(&R_W->writer);
+            }
+        }
     }
 
     //if writers are favored
@@ -46,17 +46,17 @@ void* unlocking(reader_writer_lock* R_W,int thread_type){
 
 
 
-void*reading_lock(void* r_w_lock,int type_favored){ //if type_favored == 0 then it favors readers else it favors writers
+void*reading_lock(void* r_w_lock){ 
     reader_writer_lock* R_W = (reader_writer_lock*) r_w_lock;
     
     pthread_mutex_lock(&R_W->mutex);
-    while(R_W->writing_threads>=1){
-        
+    if(R_W->writing_threads>=1){
         R_W->waiting_to_read++;
-        pthread_cond_wait(&R_W->reader,&R_W->mutex);
-        
+        while(R_W->writing_threads>=1){
+            pthread_cond_wait(&R_W->reader,&R_W->mutex);
     }
     R_W->waiting_to_read--;
+    }
     R_W->reading_threads++;
     pthread_mutex_unlock(&R_W->mutex);
     unlocking(R_W,0);
@@ -66,9 +66,12 @@ void*reading_lock(void* r_w_lock,int type_favored){ //if type_favored == 0 then 
 void* writing_lock(void* r_w_lock){
     reader_writer_lock* R_W = (reader_writer_lock*) r_w_lock;
     pthread_mutex_lock(&R_W->mutex);
-    while(R_W->reading_threads>=1 || R_W->writing_threads >=1){
+    if(R_W->reading_threads>=1 || R_W->writing_threads >=1){
         R_W->waiting_to_write++;
-        pthread_cond_wait(&R_W->writer,&R_W->mutex);
+        while(R_W->reading_threads>=1 || R_W->writing_threads >=1){
+            pthread_cond_wait(&R_W->writer,&R_W->mutex);
+        }
+        R_W->waiting_to_write--;
     }
     R_W->writing_threads++;
     pthread_mutex_unlock(&R_W->mutex);

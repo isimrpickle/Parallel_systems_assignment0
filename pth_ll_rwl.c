@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
    thread_handles = malloc(thread_count*sizeof(pthread_t));
    pthread_mutex_init(&count_mutex, NULL);
    // pthread_rwlock_init(&rwlock, NULL);
-   r_w_lock_init(&my_rwlock);
+   r_w_lock_init(&my_rwlock,0); //0==giving priority to readers, 1==giving priority to writers
    GET_TIME(start);
    for (i = 0; i < thread_count; i++)
       pthread_create(&thread_handles[i], NULL, Thread_work, (void*) i);

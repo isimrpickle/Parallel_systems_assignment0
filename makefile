@@ -61,11 +61,11 @@ $(OUTPUT_DIR)/exercise_3: $(EXERCISE3_DIR)/exercise_3.c | $(OUTPUT_DIR)
 # Build exercise 4
 exercise_4: $(OUTPUT_DIR)/exercise_4
 
-$(OUTPUT_DIR)/exercise_4: $(EXERCISE4_DIR)/exercise_4.c $(OBJS4) | $(OUTPUT_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-
 # Build pth_ll_rwl
 $(OUTPUT_DIR)/pth_ll_rwl: pth_ll_rwl.c $(OBJS4) | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(OUTPUT_DIR)/exercise_4: $(EXERCISE4_DIR)/exercise_4.c $(OBJS4) | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUTPUT_DIR)/r_w_lock_functions.o: $(EXERCISE4_DIR)/r_w_lock_functions.c | $(OUTPUT_DIR)
