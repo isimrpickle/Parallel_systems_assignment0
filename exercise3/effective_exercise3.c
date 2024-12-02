@@ -5,17 +5,25 @@
 #include <string.h> //memset
 #include "timer.h"
 
-long int* array;
-int loop; //the number of loops each thread will do
+
+typedef struct padded_array{
+    long int array_counter;
+    char padding[64 - sizeof(long int)]; //chars are 1 byte and a cache line is 64 byte, so we fill the remaining space with chars
+} alligned_array;
+
+alligned_array*  my_array;
+int loop;
 
 
 void* calculation(void* thread_id){
 intptr_t rank = (intptr_t) thread_id;
     for(int i=0;i<loop;i++)
-        *(array + rank)+=1; //accesing the equivalent element of the specific thread's rank and incrementing by one.
+        (my_array + rank)->array_counter+=1; //accesing the equivalent element of the specific thread's rank and incrementing by one.
 }
 
+
 int  main(int argc,char**argv ){
+    printf("I am the one that uses padding \n");
     int number_of_threads=4;
     long int thread_loop=100000;
     if(argc>1){
@@ -26,9 +34,12 @@ int  main(int argc,char**argv ){
     GET_TIME(start);
     printf("for number of threads %d and loop being %ld \n",number_of_threads,thread_loop);
     pthread_t * thread_handles = malloc(sizeof(pthread_t)*number_of_threads);
-    array=malloc(sizeof( long int)*number_of_threads);
-    memset(array, 0, sizeof(long int) * number_of_threads);
-    loop=thread_loop; //will be accesed by the threads function
+    my_array = malloc(number_of_threads*sizeof(struct padded_array));
+    for(int i=0; i <number_of_threads;i++){
+        (my_array+i)->array_counter=0; //initializing each counter with zero
+    }
+
+     loop=thread_loop; //will be accesed by the threads function
     for(int i=0;i<number_of_threads;i++){
         long thread_id=i;
         pthread_create(&thread_handles[i],NULL,calculation,(void*)thread_id);
@@ -39,13 +50,10 @@ int  main(int argc,char**argv ){
 
     printf("the value of each element is: \n");
     for(int i=0;i<number_of_threads;i++){
-        printf("the value for %d element is %ld \n",i,*(array+i));
+        printf("the value for %d element is %ld \n",i,(my_array+i)->array_counter);
     }
     GET_TIME(finish);
     printf("the elapsed time is : %lf \n \n \n ",finish-start);
     free(thread_handles);
-    free(array);
+    free(my_array);
 }
-
-
-

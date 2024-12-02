@@ -23,7 +23,7 @@ OBJS4 = $(OUTPUT_DIR)/r_w_lock_functions.o \
 OBJORIGINAL = $(OUTPUT_DIR)/my_rand.o 
 
 # Default target
-all: exercise_1 exercise_2 exercise_3 exercise_4 $(OUTPUT_DIR)/pth_ll_rwl $(OUTPUT_DIR)/original
+all: exercise_1 exercise_2 exercise_3 exercise_4 effective $(OUTPUT_DIR)/pth_ll_rwl $(OUTPUT_DIR)/original
 
 # Build exercise 1
 exercise_1: $(OUTPUT_DIR)/exercise_1
@@ -58,6 +58,13 @@ exercise_3: $(OUTPUT_DIR)/exercise_3
 $(OUTPUT_DIR)/exercise_3: $(EXERCISE3_DIR)/exercise_3.c | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
+effective: $(OUTPUT_DIR)/effective_exercise3
+$(OUTPUT_DIR)/effective_exercise3: $(EXERCISE3_DIR)/effective_exercise3.c | $(OUTPUT_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+
+
+
 # Build exercise 4
 exercise_4: $(OUTPUT_DIR)/exercise_4
 
@@ -71,10 +78,7 @@ $(OUTPUT_DIR)/exercise_4: $(EXERCISE4_DIR)/exercise_4.c $(OBJS4) | $(OUTPUT_DIR)
 $(OUTPUT_DIR)/r_w_lock_functions.o: $(EXERCISE4_DIR)/r_w_lock_functions.c | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-original: $(OUTPUT_DIR)/original
 
-$(OUTPUT_DIR)/original: original.c $(OBJORIGINAL) | $(OUTPUT_DIR)
-	$(CXX) -Iheader_files -o $@ $^ $(LDFLAGS)
 
 
 
@@ -88,6 +92,7 @@ clean:
 	rm -f $(OUTPUT_DIR)/exercise_1 $(OBJS1)
 	rm -f $(OUTPUT_DIR)/exercise_2 $(OBJS2)
 	rm -f $(OUTPUT_DIR)/exercise_3
+	rm -f $(OUTPUT_DIR)/effective_exercise3
 	rm -f $(OUTPUT_DIR)/exercise_4 $(OBJS4)
 	rm -f $(OUTPUT_DIR)/pth_ll_rwl
 	rm -f $(OUTPUT_DIR)/original
