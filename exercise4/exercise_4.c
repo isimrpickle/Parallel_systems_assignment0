@@ -1,7 +1,7 @@
 #include "r_w_lock_functions.h"
 
 
-
+//Εντέλει δεν χρειάστηκε κάπου,
 int main(int argc,char* argv){
     int reader_threads_size = 5;
     int writing_threads_size = 2;

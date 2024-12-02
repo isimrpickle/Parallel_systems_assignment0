@@ -20,10 +20,9 @@ OBJS2 = $(OUTPUT_DIR)/shared_variable_a.o \
 OBJS4 = $(OUTPUT_DIR)/r_w_lock_functions.o \
 		$(OUTPUT_DIR)/my_rand.o
 
-OBJORIGINAL = $(OUTPUT_DIR)/my_rand.o 
 
 # Default target
-all: exercise_1 exercise_2 exercise_3 exercise_4 effective $(OUTPUT_DIR)/pth_ll_rwl $(OUTPUT_DIR)/original
+all: exercise_1 exercise_2 exercise_3 exercise_4 effective $(OUTPUT_DIR)/pth_ll_rwl 
 
 # Build exercise 1
 exercise_1: $(OUTPUT_DIR)/exercise_1
@@ -95,5 +94,4 @@ clean:
 	rm -f $(OUTPUT_DIR)/effective_exercise3
 	rm -f $(OUTPUT_DIR)/exercise_4 $(OBJS4)
 	rm -f $(OUTPUT_DIR)/pth_ll_rwl
-	rm -f $(OUTPUT_DIR)/original
 	rmdir $(OUTPUT_DIR) 2>/dev/null || true
