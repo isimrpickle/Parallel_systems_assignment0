@@ -15,7 +15,7 @@ void* Pi_thread_approximation(void* rank){
     if(thread_Id==thread_count-1) //if it's the last thread
         loops+=number_of_throws % thread_count; //maybe the tasks do not share equally to each thread. One of them must work harder
     for(long int i=0;i<loops;i++){
-        double x=2*my_drand(&seed)-1;
+        double x=2*my_drand(&seed)-1; //drand returns 0 - 1 so we multiply it by 2 (0 - 2) and sybtract 1 (-1 - 1)
         double y=2 * my_drand(&seed) -1;
         double squared_distance = x*x + y*y;
         if(squared_distance<=1)

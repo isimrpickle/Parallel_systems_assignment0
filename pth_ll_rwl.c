@@ -58,7 +58,7 @@ int         member_count = 0, insert_count = 0, delete_count = 0;
 
 /* Setup and cleanup */
 void        Usage(char* prog_name);
-void        Get_input(int* inserts_in_main_p);
+// void        Get_input(int* inserts_in_main_p);
 
 /* Thread function */
 void*       Thread_work(void* rank);
@@ -80,10 +80,17 @@ int main(int argc, char* argv[]) {
    unsigned seed = 1;
    double start, finish;
 
-   if (argc != 2) Usage(argv[0]);
+   if (argc != 7) Usage(argv[0]);
    thread_count = strtol(argv[1],NULL,10);
+   int priority = strtol(argv[2],NULL,2);
 
-   Get_input(&inserts_in_main);
+   total_ops = strtol(argv[3],NULL,10);
+   inserts_in_main = strtol(argv[4],NULL,10);
+   search_percent = strtod(argv[5],NULL);
+   insert_percent = strtod(argv[6],NULL);
+
+   printf("runninf for thread_count: %d, priority: %d , total ops: %d, inserts_in_main: %d, search percent is:%f, and insert is:%f \n",thread_count,priority,total_ops,inserts_in_main,search_percent,insert_percent);
+   // Get_input(&inserts_in_main);
 
    /* Try to insert inserts_in_main keys, but give up after */
    /* 2*inserts_in_main attempts.                           */
@@ -105,7 +112,7 @@ int main(int argc, char* argv[]) {
    thread_handles = malloc(thread_count*sizeof(pthread_t));
    pthread_mutex_init(&count_mutex, NULL);
    // pthread_rwlock_init(&rwlock, NULL);
-   r_w_lock_init(&my_rwlock,0); //0==giving priority to readers, 1==giving priority to writers
+   r_w_lock_init(&my_rwlock,priority); //0==giving priority to readers, 1==giving priority to writers
    GET_TIME(start);
    for (i = 0; i < thread_count; i++)
       pthread_create(&thread_handles[i], NULL, Thread_work, (void*) i);
@@ -142,18 +149,18 @@ void Usage(char* prog_name) {
 }  /* Usage */
 
 /*-----------------------------------------------------------------*/
-void Get_input(int* inserts_in_main_p) {
+// void Get_input(int* inserts_in_main_p) {
 
-   printf("How many keys should be inserted in the main thread?\n");
-   scanf("%d", inserts_in_main_p);
-   printf("How many ops total should be executed?\n");
-   scanf("%d", &total_ops);
-   printf("Percent of ops that should be searches? (between 0 and 1)\n");
-   scanf("%lf", &search_percent);
-   printf("Percent of ops that should be inserts? (between 0 and 1)\n");
-   scanf("%lf", &insert_percent);
-   delete_percent = 1.0 - (search_percent + insert_percent);
-}  /* Get_input */
+//    printf("How many keys should be inserted in the main thread?\n");
+//    scanf("%d", inserts_in_main_p);
+//    printf("How many ops total should be executed?\n");
+//    scanf("%d", &total_ops);
+//    printf("Percent of ops that should be searches? (between 0 and 1)\n");
+//    scanf("%lf", &search_percent);
+//    printf("Percent of ops that should be inserts? (between 0 and 1)\n");
+//    scanf("%lf", &insert_percent);
+//    delete_percent = 1.0 - (search_percent + insert_percent);
+// }  /* Get_input */
 
 /*-----------------------------------------------------------------*/
 /* Insert value in correct numerical location into list */
@@ -293,7 +300,6 @@ void* Thread_work(void* rank) {
    unsigned seed = my_rank + 1;
    int my_member_count = 0, my_insert_count=0, my_delete_count=0;
    int ops_per_thread = total_ops/thread_count;
-
    for (i = 0; i < ops_per_thread; i++) {
       which_op = my_drand(&seed);
       val = my_rand(&seed) % MAX_KEY;
